@@ -5,7 +5,7 @@
     <div class="col-md-10 offset-md-1">
         <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Add New Book</h3>
+              <h3 class="card-title">Add Book Details</h3>
             </div>
             <!-- /.card-header -->
               <!-- Success message -->
@@ -15,12 +15,17 @@
         </div>
         @endif
             <!-- form start -->
-            <form role="form" method="POST" action="{{ Route('book.store') }}">
+            <form role="form" method="POST" action="{{ route('book.details') }}">
               @csrf
               <div class="card-body">
+
+                <div class="form-group">
+                    <input type="hidden" class="form-control {{ $errors->has('title') ? 'error' : '' }}" id="id"  value="{{ $book->id }}" >
+                     
+                </div>
                 <div class="form-group">
                   <label for="Book title">Book Title</label>
-                  <input type="text" class="form-control {{ $errors->has('title') ? 'error' : '' }}" id="title" name="title" placeholder="Enter Book Name">
+                  <input type="text" class="form-control {{ $errors->has('title') ? 'error' : '' }}" id="title" value="{{ $book->title }}" readonly>
                       <!-- Error -->
                     @if ($errors->has('title'))
                     <div class="alert  alert-danger my-1">
@@ -29,9 +34,10 @@
                     @endif
                     <!-- / Error -->
                 </div>
+                
                 <div class="form-group">
                     <label for="Book Authors">Book Authors</label>
-                    <input type="text" class="form-control {{ $errors->has('author') ? 'error' : '' }}" id="author" name="author" placeholder="Enter Book Authors">
+                    <input type="text" class="form-control {{ $errors->has('author') ? 'error' : '' }}" id="author"  value="{{ $book->author }}" readonly>
                       <!-- Error -->
                       @if ($errors->has('author'))
                       <div class="alert  alert-danger my-1 ">
@@ -42,7 +48,7 @@
                   </div>
                   <div class="form-group">
                     <label for="Book publication">Publication</label>
-                    <input type="text" class="form-control {{ $errors->has('publication') ? 'error' : '' }}" id="publication" name="publication" placeholder="Enter Publication">
+                    <input type="text" class="form-control {{ $errors->has('publication') ? 'error' : '' }}" id="publication"value="{{ $book->publication }}" readonly>
                       <!-- Error -->
                       @if ($errors->has('publication'))
                       <div class="alert  alert-danger my-1">
@@ -53,7 +59,7 @@
                   </div>
                   <div class="form-group">
                     <label for="Book category">Category</label>
-                    <input type="text" class="form-control {{ $errors->has('category') ? 'error' : '' }}" id="category" name="category" placeholder="Enter Category">
+                    <input type="text" class="form-control {{ $errors->has('category') ? 'error' : '' }}" id="category"  value="{{ $book->category }}" readonly>
                     <!-- Error -->
                     @if ($errors->has('category'))
                     <div class="alert  alert-danger my-1">
@@ -64,7 +70,7 @@
                   </div>
                   <div class="form-group">
                     <label for="Book ISBN">ISBN</label>
-                    <input type="text" class="form-control {{ $errors->has('isbn') ? 'error' : '' }}" id="isbn" name="isbn" placeholder="Enter ISBN">
+                    <input type="text" class="form-control {{ $errors->has('isbn') ? 'error' : '' }}" id="isbn"  placeholder="Enter ISBN">
                       <!-- Error -->
                       @if ($errors->has('isbn'))
                       <div class="alert  alert-danger my-1">
