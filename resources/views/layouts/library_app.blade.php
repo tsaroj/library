@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="/css/app.css">
+  @stack('styles')
   @yield('style')
 </head>
 <body class="hold-transition sidebar-mini">
@@ -734,5 +735,6 @@
 <!-- jQuery -->
 <script src="/js/app.js"></script>
 @stack('script')
+@include('sweetalert::alert')
 </body>
 </html>

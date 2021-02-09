@@ -27,3 +27,4 @@ Route::resource('book',BookController::class);
 Route::get('book/{book}/details', [BookController::class, 'details'])->name('book.details.add');
 Route::post('/book/details', [BookController::class, 'bookDetails_store'])->name('book.details');
 Route::get('book/{book}/informations', [BookController::class, 'views'])->name('book.details.view');
+Route::get('/book/test/demo', [BookController::class, 'test'])->name('book.test.demo');

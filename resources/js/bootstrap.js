@@ -12,6 +12,9 @@ try {
 
     require('bootstrap');
     require('admin-lte');
+    require('icheck-bootstrap');
+    
+    // require('jquery-validation');
 } catch (e) {}
 
 /**

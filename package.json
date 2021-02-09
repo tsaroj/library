@@ -26,6 +26,9 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.2",
-        "admin-lte": "^3.0.5"
+        "admin-lte": "^3.0.5",
+        "icheck-bootstrap": "^3.0.1",
+        "jquery-validation": "^1.19.3",
+        "sweetalert2": "^10.14.0"
     }
 }

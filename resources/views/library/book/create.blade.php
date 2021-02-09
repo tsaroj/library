@@ -9,117 +9,59 @@
             </div>
             <!-- /.card-header -->
               <!-- Success message -->
-        @if(Session::has('success'))
+        {{-- @if(Session::has('success'))
         <div class="alert alert-success">
             {{Session::get('success')}}
         </div>
-        @endif
+        @endif --}}
             <!-- form start -->
-            <form role="form" method="POST" action="{{ Route('book.store') }}">
+            <form role="form" id="bookData" method="POST" action="{{ Route('book.store') }}">
               @csrf
               <div class="card-body">
                 <div class="form-group">
                   <label for="Book title">Book Title</label>
-                  <input type="text" class="form-control {{ $errors->has('title') ? 'error' : '' }}" id="title" name="title" placeholder="Enter Book Name">
-                      <!-- Error -->
-                    @if ($errors->has('title'))
-                    <div class="alert  alert-danger my-1">
-                        {{ $errors->first('title') }}
-                    </div>
-                    @endif
-                    <!-- / Error -->
+                  <input type="text" name="title" id="title" placeholder="Enter Book Name" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}"  required  >
+                    @error('title')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="Book Authors">Book Authors</label>
-                    <input type="text" class="form-control {{ $errors->has('author') ? 'error' : '' }}" id="author" name="author" placeholder="Enter Book Authors">
-                      <!-- Error -->
-                      @if ($errors->has('author'))
-                      <div class="alert  alert-danger my-1 ">
-                          {{ $errors->first('author') }}
-                      </div>
-                      @endif
-                      <!-- / Error -->
+                    <input type="text"  id="author" name="author"  class="form-control @error('author') is-invalid @enderror" value="{{ old('author') }}"   placeholder="Enter Book Authors" required>
+                      @error('author')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
                   </div>
                   <div class="form-group">
                     <label for="Book publication">Publication</label>
-                    <input type="text" class="form-control {{ $errors->has('publication') ? 'error' : '' }}" id="publication" name="publication" placeholder="Enter Publication">
-                      <!-- Error -->
-                      @if ($errors->has('publication'))
-                      <div class="alert  alert-danger my-1">
-                          {{ $errors->first('publication') }}
-                      </div>
-                      @endif
-                      <!-- / Error -->
+                    <input type="text" id="publication" name="publication" class="form-control @error('publication') is-invalid @enderror" value="{{ old('publication') }}"  placeholder="Enter Publication" required>
+                      @error('publication')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
                   </div>
                   <div class="form-group">
                     <label for="Book category">Category</label>
-                    <input type="text" class="form-control {{ $errors->has('category') ? 'error' : '' }}" id="category" name="category" placeholder="Enter Category">
-                    <!-- Error -->
-                    @if ($errors->has('category'))
-                    <div class="alert  alert-danger my-1">
-                        {{ $errors->first('category') }}
-                    </div>
-                    @endif
-                    <!-- / Error -->
+                    <input type="text" id="category" name="category" class="form-control  @error('category') is-invalid @enderror" value="{{ old('category') }}"  placeholder="Enter Category" required>
+                      @error('category')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
                   </div>
                   <div class="form-group">
                     <label for="Book ISBN">ISBN</label>
-                    <input type="text" class="form-control {{ $errors->has('isbn') ? 'error' : '' }}" id="isbn" name="isbn" placeholder="Enter ISBN">
-                      <!-- Error -->
-                      @if ($errors->has('isbn'))
-                      <div class="alert  alert-danger my-1">
-                          {{ $errors->first('isbn') }}
-                      </div>
-                      @endif
-                      <!-- / Error -->
-                  </div>
-                  <table class="table " id="dynamicTable">  
-                    <tr>
-                        <th>Edition</th>
-                        <th>Book Code</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr>  
-                        <td>
-                          <input type="text" name="addmore[0][edition]" placeholder="Book Edition" class="form-control {{ $errors->has('name') ? 'error' : '' }}" />
-                            <!-- Error -->
-                            @if ($errors->has('edition'))
-                            <div class="alert  alert-danger my-1">
-                                {{ $errors->first('edition') }}
-                            </div>
-                            @endif
-                            <!-- / Error -->
-                        </td>  
-        
-                        <td>
-                          <input type="text" name="addmore[0][book_code]" placeholder="Book Code" class="form-control {{ $errors->has('name') ? 'error' : '' }}" />
-                            <!-- Error -->
-                            @if ($errors->has('book_code'))
-                            <div class="alert  alert-danger my-1">
-                                {{ $errors->first('book_code') }}
-                            </div>
-                            @endif
-                            <!-- / Error -->
-                        </td>  
-        
-                        <td>
-                          <input type="text" name="addmore[0][price]" placeholder="Book Price" class="form-control {{ $errors->has('name') ? 'error' : '' }}" />
-                            <!-- Error -->
-                            @if ($errors->has('price'))
-                            <div class="alert  alert-danger my-1">
-                                {{ $errors->first('price') }}
-                            </div>
-                            @endif
-                            <!-- / Error -->
-                        </td>  
-        
-                        <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>  
-        
-                    </tr>  
-        
-                </table>
-
+                    <input type="text" id="isbn" name="isbn" class="form-control @error('isbn') is-invalid @enderror" value="{{ old('isbn') }}"  placeholder="Enter ISBN" required>
+                      @error('addmore[0][book_code]')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
                   <hr>
                   <div class="form-group">
                     <button type="button" class="btn btn-danger">Cancel</button>
@@ -134,7 +76,6 @@
 @endsection
 
 @push('script')
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
    var i = 0;
   $("#add").click(function(){
@@ -146,4 +87,37 @@
        $(this).parents('tr').remove();
   });
 </script>
+
+
+<script>
+  $("#bookData").validate({
+    rules:{
+      title:{
+        required:true,
+      },
+      author:{
+        required:true,
+      },
+      publication:{
+        required:true,
+      },
+      category:{
+        required:true,
+      },
+      isbn:{
+        required:true,
+      }
+
+    }
+  });
+</script>
+@endpush
+
+@push('styles')
+<style>
+   .error{
+      color:red;
+  } 
+</style>
+    
 @endpush

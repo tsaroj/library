@@ -6,6 +6,16 @@
 @endsection
 @section('content')
 <div class="row ">
+  {{-- @if(session()->has('message.level'))
+    <div class="alert alert-{{ session('message.level') }}"> 
+    {!! session('message.content') !!}
+    </div>
+@endif --}}
+  @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{Session::get('success')}}
+        </div>
+        @endif
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
@@ -79,5 +89,14 @@
   $(document).ready( function () {
     $('#book-list').DataTable();
   } );
+</script>
+
+<script> 
+  swal({
+      "timer":1800,
+      "title":"Título",
+      "text":"Notificación Básica",
+      "showConfirmButton":false
+  });
 </script>
 @endpush
