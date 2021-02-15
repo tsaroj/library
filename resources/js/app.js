@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 require('jquery-validation');
-const Swal = require('sweetalert2')
+require('sweetalert');
 window.Vue = require('vue').default;
 
 /**

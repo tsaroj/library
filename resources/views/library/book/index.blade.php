@@ -1,7 +1,11 @@
 @extends('layouts.library_app')
 @section('style')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
-  
+<style>
+  tr>td{
+    vertical-align: middle!important;
+  }
+</style>
 
 @endsection
 @section('content')
@@ -47,21 +51,26 @@
                       @foreach ($books as $book)
                      
                       <tr>
-                        <a class="table-row" href="route{{ 'book.create' }}">
+                        <a class="table-row" href="route{{ 'book.create' }}"> 
                         <td>{{ $book->id }}</td>
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->author }}</td>
                         <td>{{ $book->publication }}</td>
                         <td>
                              @if ($book->status==1)
-                             <span class="badge badge-success">available</span>
+                             <span class="badge badge-success my-4 ">Available</span>
                              @else
-                                 <span class="badge badge-success">Unavailable</span>
+                                 <span class="badge badge-danger my-4">Unavailable</span>
                              @endif
                         </td>
-                        <td>
-                          <a href="{{ route('book.details.add',$book->id) }}" class="btn btn-info btn-small">add Details</a>
-                          <a href="{{ route('book.details.view',$book->id) }}" class="btn btn-primary btn-small">View</a>
+                        <td class="text-center">
+                          <a href="{{ route('book.details.view',$book->id) }}">
+                            <button class="btn btn-primary btn-sm mt-2"><i class="fa fa-eye"></i><span class="px-2">View</span></button>
+                          </a>
+                          <div class="clearfix"></div>
+                          <a href="{{ route('book.details.add',$book->id) }}">
+                            <button class="btn btn-success btn-sm mt-2"><i class="fa fa-plus"></i><span class="px-2">Add Detail</span></button>
+                          </a>
                         </td>
                       </a>
                       </tr>  

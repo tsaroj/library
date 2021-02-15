@@ -29,6 +29,7 @@
         "admin-lte": "^3.0.5",
         "icheck-bootstrap": "^3.0.1",
         "jquery-validation": "^1.19.3",
+        "sweetalert": "^2.1.2",
         "sweetalert2": "^10.14.0"
     }
 }

@@ -13,12 +13,12 @@ class Borrow extends Model
 
     public function  book_detail()
     {
-        return $this->belongsTo(BookDetail::class);
+        return $this->hasOne(BookDetail::class,'id','bookdetail_id');
     }
 
     public function  student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->hasOne(Student::class,'id','student_id');
     }
 
     public function  user()

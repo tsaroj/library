@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\models\Book;
 use App\models\BookDetail;
 Use Alert;
+use DB;
 
 
 class BookController extends Controller
@@ -53,34 +54,36 @@ class BookController extends Controller
             'category'=>'required',
         ]);
 
-
+// return $validator;
         if ($validator->fails()) {
             Alert::error('Oops....! ', 'Please enter the valid data in input field');
              return redirect()->back();
         } else {
-            // if (Book::where([
-            //     ['title', '=', $request->title],
-            //     ['author', '=', $request->author],
-            //     ['publication', '=', $request->publication],
-            //     ['category', '=', $request->category],
-            // ])) {
-                if(!Book::where('title',$request->title)->where('author',$request->author)->where('publication',$request->publication)->where('category',$request->category))
+            $book = Book::where([
+                ['title', '=', $request->title],
+                ['author', '=', $request->author],
+                ['publication', '=', $request->publication],
+                ['category', '=', $request->category],])->count();
+            if ($book < 1) 
+               { $books->title = $request->title;
+                $books->author = $request->author;
+                $books->publication = $request->publication;
+                $books->category = $request->category;
+                $books->save();
+                Alert::success('Success ', 'Book is successfully added');
+                return redirect()->route('book.index');
+               
+            }  
+            else 
                 {
-
-                    $books->title = $request->title;
-                    $books->author = $request->author;
-                    $books->publication = $request->publication;
-                    $books->category = $request->category;
-                    $books->save();
-                    Alert::success('Success ', 'Book is successfully added');
-                    return redirect()->route('book.index');
+                Alert::error('Oops....! ', 'Book Has been already added');
+                return redirect()->route('book.index');
 
                
 
-            } else {
-                Alert::error('Oops....! ', 'Book Has been already added');
-                return redirect()->route('book.index');
-            }   
+           
+
+        }
         }
     }
 
@@ -115,14 +118,14 @@ class BookController extends Controller
     public function bookDetails_store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'addmore.*.book_code' =>'required|min:6|max:6',
+            'addmore.*.book_code' =>'required|min:6|max:6|unique:book_details,book_code',
             'addmore.*.edition'  => 'required',
             'addmore.*.price'  => 'required',
         ]);
         
         if ($validator->fails()) {
             Alert::error('Oops....! ', 'Please enter the valid data in input field');
-             return redirect()->back();
+             return redirect()->back()->withInput($request->all());
         } else {
             $book_id = $request->id;
             foreach ($request->addmore as  $value) {
@@ -163,13 +166,18 @@ class BookController extends Controller
 
     public function views($id,Request $request)
     {
-        // return $id;
-        
-        $bookDetails = Book::with('bookDetails')->findOrFail($id);
-        // return $bookDetails;
-        return view('library.book.BooksDetails',compact('bookDetails'));
-        //return redirect()->route('book.details.view',compact('bookDetails'));
-      
+        $book = Book::with('bookDetails')->findOrFail($id);
+        // return $book;
+        $newarr =[];
+        foreach($book->bookDetails as $detail)
+        {
+            $newarr[$detail->edition]["price"] = $detail->price;
+            $newarr[$detail->edition]["status"] = $detail->status;
+            $newarr[$detail->edition]['book_codes'][] = $detail->book_code;
+        }
+        $book['editions'] = $newarr;
+       
+        return view('library.book.BooksDetails',compact('book'));
     }
 
    
@@ -177,4 +185,6 @@ class BookController extends Controller
     {
         return view ('library.book.test');
     }
+
+   
 }

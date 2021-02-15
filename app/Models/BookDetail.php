@@ -11,12 +11,12 @@ class BookDetail extends Model
 
     protected $fillable = ['book_code', 'edition', 'price'];
 
-    public function Borrow()
+    public function borrow()
     {
         return $this->hasMany(Borrow::class);
     }
 
-    public function Book()
+    public function book()
     {
         return $this->belongsTo(Book::class);
     }
