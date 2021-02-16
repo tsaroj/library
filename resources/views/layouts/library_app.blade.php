@@ -206,6 +206,15 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ route('return.index') }}" class="nav-link">
+              <img src="{{asset('img/book.png')}}" height="18" width="18"></img>
+              <p class="ml-2">
+                Return Book
+              </p>
+            </a>
+          </li>
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
