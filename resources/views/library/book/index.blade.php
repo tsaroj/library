@@ -100,12 +100,5 @@
   } );
 </script>
 
-<script> 
-  swal({
-      "timer":1800,
-      "title":"Título",
-      "text":"Notificación Básica",
-      "showConfirmButton":false
-  });
-</script>
+
 @endpush
