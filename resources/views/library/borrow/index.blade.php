@@ -59,7 +59,7 @@
                       </thead>
                       <tbody>
                         @foreach($dataBook as $key=>$dBook)
-                        <tr>
+                        <tr class="bg-naya">
                           <td>{{ $key+1 }}</td>
                           <td>{{ $dBook['book_detail']['book']['title'] }}</td>
                           <td>{{ $dBook['book_detail']['book_code'] }}</td>
@@ -118,6 +118,8 @@
 </div>
     
 @endsection
+
+
 @push('script')
   <script>
      $(document).ready(function(){
@@ -141,18 +143,22 @@
                     var dataX = result.data;
                     var bookid = dataX['id'];
                     
-                    
-
                     if(dataX != ''){
                       
-                      $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['title']+'</td>');
-                      $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['author']+'</td>');
-                      $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['publication']+'</td>');
-                      $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['category']+'</td>'); 
-                      $('#bookTable').children('tbody').children('tr').append('<td class="text-right"><button type="button" data-book-id="'+bookid+'" class="w-100 btn-add-book btn btn-primary"><i class="fa fa-plus-circle"></i>Issue</button></td>'); 
-                      $('#bookResultContainer').removeClass('d-none');
-                      
-                      
+                      if(result.issued)
+                      {
+                        $('#bookTable').children('tbody').children('tr').append('<td colspan="5" class="text-center font-weight-bold"> Selected Book Already Issued to Other Student!! </td>');
+                        $('#bookResultContainer').removeClass('d-none');
+                      }
+                      else
+                      {
+                        $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['title']+'</td>');
+                        $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['author']+'</td>');
+                        $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['publication']+'</td>');
+                        $('#bookTable').children('tbody').children('tr').append('<td>'+dataX['book']['category']+'</td>'); 
+                        $('#bookTable').children('tbody').children('tr').append('<td class="text-right"><button type="button" data-book-id="'+bookid+'" class="w-100 btn-add-book btn btn-primary" '+((result.issued)?'disabled':'')+'><i class="fa fa-plus-circle"></i>Issue</button></td>'); 
+                        $('#bookResultContainer').removeClass('d-none');
+                      }
                     }
                   }
               }});
@@ -161,6 +167,11 @@
 
         @if($studentD == NULL)
           $(document).on('keyup','#student_id',function(){
+            
+            $('#studentResultContainer').addClass('d-none');
+                $('#h_student_id').val('');
+                $('#studentTable').children('tbody').children('tr').empty();
+                $('#studentTable1').empty();
             if($(this).val() != '')
         {  var studentURL = '{{route('borrow.get.students',['student_id'=>'__studentid__'])}}';
               var studentURL = studentURL.replace("__studentid__",$(this).val());
@@ -185,12 +196,14 @@
                       $('#studentResultContainer').removeClass('d-none');
                     }
                     else if(dataX == 0){
-                      
-
                       $('#studentTable1').append('<div class="alert alert-danger">Student not Found</div>');
                     }
-                    
-
+                  }
+                  else{
+                    $('#studentResultContainer').addClass('d-none');
+                $('#h_student_id').val('');
+                $('#studentTable').children('tbody').children('tr').empty();
+                $('#studentTable1').empty();
                   }
               }});
              }

@@ -18,11 +18,7 @@
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">  Books </h3>
-              <a href="{{ Route('book.create') }}" class="btn btn-success float-right">
-                <i class="fas fa-plus-circle mr-2"></i>
-                  Add Book
-                </a>
+              <h3 class="card-title">  Issued Books </h3>
             </div>
             <!-- /.card-header -->
         </div>
@@ -38,36 +34,27 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Publication</th>
-                        <th>status</th>
-                        <th>Action</th>
+                        <th>Access code</th>
+                        <th>Student</th>
+                        <th>Issued By</th>
+                        <th>issued Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($books as $book)
+                      @foreach ($issuedBook as $book)
                      
                       <tr>
                         <a class="table-row" href="route{{ 'book.create' }}"> 
-                        <td>{{ $book->id }}</td>
-                        <td>{{ $book->title }}</td>
-                        <td>{{ $book->author }}</td>
-                        <td>{{ $book->publication }}</td>
-                        <td>
-                             @if ($book->status==1)
-                             <span class="badge badge-success my-4 ">Available</span>
-                             @else
-                                 <span class="badge badge-danger my-4">Unavailable</span>
-                             @endif
-                        </td>
-                        <td class="text-center">
-                          <a href="{{ route('book.details.view',$book->id) }}">
-                            <button class="btn btn-primary btn-sm mt-2"><i class="fa fa-eye"></i><span class="px-2">View</span></button>
-                          </a>
-                          <div class="clearfix"></div>
-                          <a href="{{ route('book.details.add',$book->id) }}">
-                            <button class="btn btn-success btn-sm mt-2"><i class="fa fa-plus"></i><span class="px-2">Add Detail</span></button>
-                          </a>
-                        </td>
-                      </a>
+                        <td>{{ $book["id"] }}</td>
+                        <td>{{ $book->book_detail->book->title }}</td>
+                        <td>{{ $book->book_detail->book->author }}</td>
+                        <td>{{ $book->book_detail->book->publication }}</td>
+                        <td>{{ $book->book_detail->book_code }}</td>
+                        <td>{{ $book->user->name }}</td>
+                        <td>{{ $book->user->name }}</td>
+                        <td>{{ $book->created_at->format('d-m-Y') }}</td>
+                                             
+                        
                       </tr>  
                       
                       @endforeach

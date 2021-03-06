@@ -18,11 +18,7 @@
     <div class="col-md-12">
         <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">  Books </h3>
-              <a href="{{ Route('book.create') }}" class="btn btn-success float-right">
-                <i class="fas fa-plus-circle mr-2"></i>
-                  Add Book
-                </a>
+              <h3 class="card-title">  Students </h3>
             </div>
             <!-- /.card-header -->
         </div>
@@ -35,37 +31,41 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Publication</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>DoB</th>
                         <th>status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($books as $book)
+                      @foreach ($response as $student)
                      
                       <tr>
                         <a class="table-row" href="route{{ 'book.create' }}"> 
-                        <td>{{ $book->id }}</td>
-                        <td>{{ $book->title }}</td>
-                        <td>{{ $book->author }}</td>
-                        <td>{{ $book->publication }}</td>
+                        <td>{{ $student["id"] }}</td>
+                        <td>{{ $student["name"] }}</td>
                         <td>
-                             @if ($book->status==1)
+                           {{ $student["gender"] == 1?"Male":"Female"}}
+                        </td>
+                        <td>{{ $student["address"] }}</td>
+                        <td>{{ $student["date_of_birth"] }}</td>
+                        <td>
+                             @if ($student["status"]==1)
                              <span class="badge badge-success my-4 ">Available</span>
                              @else
                                  <span class="badge badge-danger my-4">Unavailable</span>
                              @endif
                         </td>
                         <td class="text-center">
-                          <a href="{{ route('book.details.view',$book->id) }}">
+                          <a href="{{ route('student.show',$student["id"]) }}">
                             <button class="btn btn-primary btn-sm mt-2"><i class="fa fa-eye"></i><span class="px-2">View</span></button>
                           </a>
-                          <div class="clearfix"></div>
-                          <a href="{{ route('book.details.add',$book->id) }}">
+                          {{-- <div class="clearfix"></div>
+                          <a href="{{ route('book.details.add',$studentid) }}">
                             <button class="btn btn-success btn-sm mt-2"><i class="fa fa-plus"></i><span class="px-2">Add Detail</span></button>
-                          </a>
+                          </a> --}}
                         </td>
                       </a>
                       </tr>  

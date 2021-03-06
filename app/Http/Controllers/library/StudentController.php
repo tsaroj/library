@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\library;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
+use App\Models\Borrow;
 use app\Models\Student;
 
 class StudentController extends Controller
@@ -17,6 +19,16 @@ class StudentController extends Controller
     public function index()
     {
         
+        $response = Http::get('http://192.168.254.8:8000/api/allstudents');
+        $response = json_decode($response,true);
+        return view('library.student.index',compact('response'));
+    }
+    public function getAllStudents()
+    {
+
+
+        $response = Http::get('http://192.168.254.8:8000/api/allstudents');
+        return $response;
     }
 
     /**
@@ -48,7 +60,13 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $url = 'http://192.168.254.8:8000/api/students/'.$id;
+        $dataStudent = Http::get($url);
+        $dataStudent = json_decode($dataStudent,true);
+        $books = Borrow::with('book_detail.book','user')->where(['student_id'=>$dataStudent['id'],'returned'=>0])->get();
+        // $books = Borrow::with('user')->where(['student_id'=>$dataStudent['id'],'returned'=>0])->get();
+        // return$books;
+        return view('library.student.show',compact('dataStudent','books'));
     }
 
     /**

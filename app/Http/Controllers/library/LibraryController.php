@@ -5,6 +5,8 @@ namespace App\Http\Controllers\library;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Borrow;
+use Illuminate\Support\Facades\Http;
 
 class LibraryController extends Controller
 {
@@ -17,9 +19,14 @@ class LibraryController extends Controller
     {
         $books =  Book::latest()->take(10)->get();
         $count = Book::all()->count();
-        // return $count;
-        // return $books;
-        return view('library/home',compact('books','count'));
+        $borrowedNo = Borrow::where('returned',0)->get()->count();
+
+        $response = Http::get('http://192.168.254.8:8000/api/allstudents');
+        // $allStudents = count($response);
+        $response = json_decode($response,true);
+
+        // return $allStudents;
+        return view('library/home',compact('count','borrowedNo','response'));
     }
 
     /**

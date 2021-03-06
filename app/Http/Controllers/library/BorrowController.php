@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 use App\Models\BookDetail;
-use App\Models\Student;
+use Illuminate\Support\Facades\Http;
 use App\Models\Borrow;
 Use Alert;
 
@@ -29,12 +29,19 @@ class BorrowController extends Controller
             if($student)
             {
                 $studentD = ['id'=>$student['id'],'name'=>$student['name']];
-                $dataBook = Borrow::with('book_detail.book','student')->where(['student_id'=>$studentD['id'],'returned'=>0])->get();
+                $dataBook = Borrow::with('book_detail.book')->where(['student_id'=>$studentD['id'],'returned'=>0])->get();
                 $maxBook = Borrow::where(['student_id'=>$studentD['id'],'returned'=>0])->count();
                 $isMaxBook = ($maxBook >= 5)?1:0;
             }
         }
         return view('library/borrow/index',compact('studentD','dataBook','isMaxBook'));
+    }
+
+    public function issuedBook()
+    {
+        $issuedBook = Borrow::with('book_detail.book','user')->where('returned',0)->get();
+        // return $issuedBook;
+        return view('library.borrow.borrowedBook',compact('issuedBook'));
     }
 
     /**
@@ -44,7 +51,7 @@ class BorrowController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -113,13 +120,17 @@ class BorrowController extends Controller
 
     public function student_details($id)
     {
-        $dataStudent = Student::where(['id'=>$id])->get();
-        if(count($dataStudent)  == 1)
+
+        //$dataStudent = Student::where(['id'=>$id])->get();
+        $url = 'http://192.168.254.8:8000/api/students/'.$id;
+        $dataStudent = Http::get($url);
+        $dataStudent = json_decode($dataStudent,true);
+        //return response()->json(['status'=>1,'data'=>$dataStudent]);
+        if(!is_null($dataStudent))
         {
-            return response()->json(['status'=>1,'data'=>$dataStudent[0]]);
+            return response()->json(['status'=>1,'data'=>$dataStudent]);
         }
-        elseif(count($dataStudent)==0)
-        {
+        else{
             return response()->json(['status'=>1,'data'=>0]);
         }
     }
@@ -163,15 +174,24 @@ class BorrowController extends Controller
 
     public function getBooks(Request $request,$id)
     {
-       
-        $dataBook = BookDetail::with('book')->where(['book_code'=>$id])->get();
+        $dataBook = BookDetail::with(['book','borrow'=>function($query){
+            return $query->where('returned',0);
+        }])->where(['book_code'=>$id])->get();
+
         if(count($dataBook) > 0)
         {
-            return response()->json(['status'=>1,'data'=>$dataBook[0]]);
+            if(empty($dataBook[0]->borrow)){
+                return response()->json(['status'=>1,'data'=>$dataBook[0],'issued'=>0]);
+            }
+            elseif(count($dataBook[0]->borrow) == 1)
+            {
+                return response()->json(['status'=>1,'data'=>$dataBook[0],'issued'=>1]);
+            }
+            elseif(count($dataBook[0]->borrow) == 0)
+            {
+                return response()->json(['status'=>1,'data'=>$dataBook[0],'issued'=>0]);
+            }
         }
-        else
-        {
-            return response()->json(['status'=>1,'data'=>'']);
-        }
+        return response()->json(['status'=>0,'data'=>'','issued'=>0]);
     }
 }

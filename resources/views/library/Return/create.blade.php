@@ -13,7 +13,7 @@
                   @method('DELETE')
               @csrf
               {{-- <input type="hidden" name="student_id" id="h_student_id" value="" required> --}}
-              <input type="hidden" name="bookdetail_id" id="h_bookdetail_id" value="{{$borrowed == null?old('bookdetail_id'):$borrowed['bookdetail_id']}}" required>
+              <input type="hidden" name="bookdetail_id" id="h_bookdetail_id" value="old('bookdetail_id')" required>
               <div class="card-body">
                 <div class="form-group">
                     <label for="Book Id">Book Code</label>
@@ -85,6 +85,7 @@
           </div>
         </div>
     </div>
+    
 </div>
 @endsection
 
@@ -115,7 +116,7 @@
                             var bookdetail_id = dataX['id'];
 
                             if(dataX != ''){
-                              var dataZ = result.student;
+                              var dataZ = result.data.student;
                               var dataY = result.data.book_detail.book;
                             
                               $('#bookTable').children('tbody').children('tr').append('<td>'+dataY['title']+'</td>');
@@ -144,7 +145,6 @@
             var suff = $(this).data('book-id');
             $('#h_bookdetail_id').val($(this).data('book-id'));
 
-            // var url = '{{route('retun.books.page',['return'=>'__bookdetailid__'])}}';
             var url = '{{route('return.destroy',['return'=>'__bookdetailid__'])}}';
 
 
@@ -158,8 +158,8 @@
             data: form.serialize(),
             dataType: 'json',
             success: function(result){
-              $('#container').load(' #contents');
-              swal('book return successfully!!','', 'Success');
+
+              swal('Successful','', 'successful');
             }
             });
         });
