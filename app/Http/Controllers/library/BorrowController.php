@@ -25,7 +25,14 @@ class BorrowController extends Controller
         $dataBook =array();
         $maxBook = null;
         if($student != null){
-            $student = Student::find($student);
+            
+            $url = 'http://192.168.254.8:8000/api/students/'.$student;
+            $dataStudent = Http::get($url);
+            $student = json_decode($dataStudent,true);
+
+
+
+            // $student = Student::find($student);
             if($student)
             {
                 $studentD = ['id'=>$student['id'],'name'=>$student['name']];
@@ -95,7 +102,7 @@ class BorrowController extends Controller
                 $borrow->status = 1;
                     if($borrow->save())
                     {
-                        return response()->json(['status'=>1]);
+                        return response()->json(['status'=>1,'msg'=>'Book Issued Successfully']);
                     }        
                     else{
                         return response()->json(['status'=>0]);

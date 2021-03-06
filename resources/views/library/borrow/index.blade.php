@@ -240,6 +240,7 @@
           }
           $(this).html('Added');
           $(this).prop('disabled',true);
+          swal(result.msg,'', "success")
         }
         else{
           swal(result.msg,'', "error");
